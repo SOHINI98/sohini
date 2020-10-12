@@ -1,0 +1,75 @@
+SELECT * FROM playlists
+WHERE name LIKE '%audio%';
+Select AlbumId as album , Title as songname from albums
+Select city as address from customers 
+SELECT t.name , t.albumid , t.genreid 
+from tracks as t 
+inner join invoice_items on t.trackid = invoice_items.trackid
+
+select a.artistid , a.title , tracks.UnitPrice , genres.Name
+from ((albums as a
+inner join tracks on a.albumid=tracks.albumid)
+inner join genres on tracks.GenreId = genres.GenreId);
+
+select invoice_items.TrackId, invoice_items.UnitPrice , invoices.BillingCountry , invoices.CustomerId
+from invoice_items
+left join invoices on invoice_items.InvoiceId = invoices.InvoiceId
+
+select A.firstname  , B.firstname  , A.country
+from customers A , customers B 
+where A.firstname <> B.firstname 
+and A.country = B.country 
+order by B.country
+
+create table sohini ( rba integer NOT NULL ,
+EBIZ integer not null, 
+rural integer not null,  primary key(rba));
+alter table sohini add student_id int ;
+insert into sohini(rba,ebiz,rural) values(23,36,56),(20,30,40),(78,68,58);
+ 
+select * from 'CLIENT DATA'
+SELECT DISTINCT * FROM 'CLIENT DATA'
+alter table 'client data' 
+CREATE TABLE case_details (case_id  INTEGER PRIMARY KEY, client_id integer not null , department CHAR , date_of_receipt DATE , foreign key (client_id) references 'client data' (client_id));
+SELECT DISTINCT * FROM 'CLIENT DATA'
+select * from case_details
+PRAGMA foreign_keys = OFF;
+INSERT OR IGNORE INTO CASE_DETAILS (CASE_ID , CLIENT_ID ,DEPARTMENT , DATE_OF_RECEIPT)
+VALUES ( 501 , 1 , "TOXICOLOGY" , 2020-02-05), ( 502 , 2 , "SEROLOGY" , 2020-02-06) , (503 , 3 , "QUESTIONED_DOCUMENTS" , 2020-02-07) , (504 , 4 , "EXPLOSIVES" ,2020-03-08 ), (505 , 5 , "FINGERPRINTITNG" , 2020-02-09) , (506 , 6 , "PHOTOGRAPHY" , 2020-02-10 ) , (507 , 7 , "NARCOTICS" , 2020-02-12 ) , (508 , 8 ,"CHEMISTRY" , 2020-02-15), (509 ,9, "BALLISTICS" , 2020-02-20 ) , (510 , 10 , "CYBER_SECURITY" , 2020-02-21);
+
+create table employee_data ( employee_name int not null , employee_id integer primary key not null , employee_designation char ) ;
+select * from employee_data  
+alter table employee_data add department_id ;
+alter table employee_data add employee_contact ;
+
+
+insert OR ignore into employee_data (employee_name , employee_id , employee_designation , department_id , employee_contact ) 
+values ("NAMRATA" , 13 , "ACCOUNTANT" , 20, 96547);
+VALUES ("ANUSHREE" , 14 , "DOCUMENT_EXPERT" , 30 , 34567) , ("RASIKA" , 15 , "FINGERPRINT_SPECIALIST" , 40 , 45678 ), ("ISHITA" , 16 , "DNA_FINGERPRINTING_EXPERT" , 50 ,56789 ) , ("RENUKA" , 17 , " CRIME_SCENE_INVESTIGATOR" , 60, 67890 ) , ("JHANVI" , 18 , "EXPLOSIVE_EXPERT" , 70 , 13456 ) , ("SNEHA" , 19 , "CYBER_SPECIALIST" , 80 , 35678 ), ( "APURVA" , 22 , "HR" , 90 , 78901 ) , ("SHIVANI" , 21 , "FORENSIC_PSYCHOLOGIST" , 100 , 67892) ;
+
+
+create table Funds_transfer ( transaction_id integer not null primary key , case_id int not null , source_bank char , source account_no int , amount_in_rs int , foreign key (case_id) references case_details(case_id)) ;
+select * from funds_transfer 
+
+PRAGMA foreign_keys = OFF;
+insert or ignore into funds_transfer ( transaction_id , case_id , source_bank , source  , amount_in_rs )
+values (201,1,"axis bank",3170,7000) , (202,2,"hdfc bank",3180,8000) , (203,3,"bandhan bank",7890,9000) , (204,4,"punjab national bank",8901,20000) , (205,5,"icici bank",7823,80000), ( 206,6,"idbi bank",2345 , 6000) , (207,7,"indian bank",7823,12000) , (208,8,"allahabad bank",8909,30000),(209,9,"bank of maharashtra",8521,40000),(210,10,"kotak mahindra bank",9804,70000);
+
+create table department ( department_id integer not null primary key , dept_name char not null ,department_contact int not null ,case_id , foreign key (case_id) references case_details (case_id));
+select * from department 
+PRAGMA foreign_keys = OFF;
+insert or ignore into department ( department_id,dept_name, department_contact , case_id)
+values( 301,"serology", 45678,502) , (302,"toxicology",7890,501) ,(303,"questioned_documents",7890,503),(304,"explosives",4321,504),(305,"fingerprinting",7821,505),(306,"ph0tography",7812,506) , (307 , "narcotics" , 6543,507),(308, "chemistry",3420,508),(309,"ballistics",2002,509),(310,"cyber_security",8008,510);
+
+
+create table instrumets_reqd ( instrument_id integer not null primary key ,instrument_name char not null , quantity integer , per_unit_price integer , department_id integer not null , foreign key (department_id) references department (department_id));
+ select * from instrumets_reqd 
+pragma foreign_keys=off;
+insert or ignore into instrumets_reqd ( instrument_id , instrument_name ,quantity , per_unit_price , department_id ,supplier ) values (801,"weighing balance" , 03, 300 ,303, "maquen solutions"),(802,"gas chromatography",01,50000,308,"biolab") , (803,"fingerprint_kit",03,7000,305,"victory suppliers") , (804,"fluroscence spectroscopy",01,100000,307,"iob solutions") ,(805 , "hand gloves",100,05,309,"goyalstationaries"), (806 , "slides" , 500, 01 , 308 , "goyal stationaries") , (807, "preservatives" , 20 ,60, 308 ,"iob"), ( 808 ,"evidence storage pouch" , 100 , 02 , 304 , "zippermates") , (809 , "conical flask",50,90,301,"roadsiderodgers"),(810,"steromicroscope",04,5000,303,"wellgo") ;
+
+
+create table supplier ( invoice_id integer primary key , supply_date date , instrument_id , supplier char not null , supplier_location, foreign key (instrument_id) references instrumets_reqd (instrument_id));
+select*from supplier 
+pragma foreign_key = off;
+insert or ignore into supplier (invoice_id , supply_date , instrument_id , supplier , supplier_location )
+values(701,2020-03-08 , 801,"maquen solutions" , " south delhi") ,( 702 , 2020-03-05 , 802 ,"biolab" , "noida") , (703 , 2020-03-06 , 803 , "victory suppliers" , "chandigarh" ) , (704,2020-03-09,804,"iob solutions", "ghaziabad") , (705, 2020-03-07,805,"goyalstationaries","north delhi") , (706 , 2020-03-01,806,"goyal stationaries","gurugram"),(707,2020-03-04,807,"iob","north delhi" ) , (708 , 2020-03-10 , 808 , "zippermates" , "chandigarh" ) , (709 , 2020-03-11 , 809 , "roadsiderodgers" , "varanasi") ,(710,2020-03-12,810,"wellgo","jalandhar") ;
